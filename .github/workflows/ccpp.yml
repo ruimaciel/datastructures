@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: install dependencies
-      run: sudo apt-get install build-essential cmake
+      run: sudo apt-get install build-essential cmake libboost-test-dev
     - name: configure cmake project
       run: |
         mkdir build && cd build
