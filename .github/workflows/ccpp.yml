@@ -1,0 +1,21 @@
+name: C/C++ CI
+
+on: [push]
+        
+jobs:
+  build:
+    name: build job 
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - uses: actions/checkout@master
+    - name: install dependencies
+      run: sudo apt-get install build-essential cmake
+    - name: configure cmake project
+      run: |
+        mkdir build && cd build
+        cmake ..
+    - name: make
+      run: |
+        cd build
+        make
