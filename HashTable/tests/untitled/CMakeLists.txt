@@ -9,11 +9,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 
 add_executable(HashCase main.c++)
+add_test(HashCase COMMAND HashCase)
 
 target_link_libraries(HashCase
     HashTable
     )
-add_test(HashCase COMMAND HashCase)
 
 if (DEFINED ENV{BOOST_INCLUDE_DIR})
     set(BOOST_INCLUDE_DIR $ENV{BOOST_INCLUDE_DIR})

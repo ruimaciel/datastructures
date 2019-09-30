@@ -6,7 +6,10 @@ template<class TKey, class TValue>
 class HashTable
 {
 public:
-    HashTable();
+    HashTable()
+    {
+
+    }
 };
 
 #endif // HASHTABLE_H

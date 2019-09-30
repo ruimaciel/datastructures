@@ -6,7 +6,7 @@ project(BinaryHeap
     )
 
 set(BinaryHeap_INCLUDES
-    include/BinaryHeap.h++
+    includes/BinaryHeap.h++
     )
 
 add_library(${PROJECT_NAME} INTERFACE)

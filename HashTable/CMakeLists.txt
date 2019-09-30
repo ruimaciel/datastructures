@@ -9,34 +9,17 @@ set(HashTable_INCLUDES
     includes/HashTable.h++
     )
 
-set(HashTable_SOURCES
-    src/HashTable.c++
-    )
+add_library(${PROJECT_NAME} INTERFACE )
 
-set(HashTable_HEADERS
-    )
+target_include_directories(
+  ${PROJECT_NAME}
+  INTERFACE $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+            )
 
-add_library(${PROJECT_NAME}
-    SHARED
-    ${HashTable_INCLUDES}
-    ${HashTable_SOURCES}
-    ${HashTable_HEADERS}
-    )
-
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes>
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
-
-set_target_properties(
-    ${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 11
-    CXX_STANDARD_REQUIRED ON
-    C_EXTENSIONS OFF
-    POSITION_INDEPENDENT_CODE ON
+target_compile_features(
+    ${PROJECT_NAME}
+    INTERFACE cxx_std_11
     )
 
 
@@ -44,3 +27,10 @@ option(RUN_TESTS "runs unit tests" ON)
 if(RUN_TESTS)
     add_subdirectory(tests)
 endif(RUN_TESTS)
+
+install(TARGETS ${PROJECT_NAME}
+        EXPORT ${PROJECT_NAME}_Targets
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        )
