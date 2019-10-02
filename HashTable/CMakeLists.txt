@@ -5,40 +5,15 @@ project(HashTable
     LANGUAGES CXX
     )
 
-set(HashTable_INCLUDES
-    includes/HashTable.h++
-    )
+set(HashTable_INCLUDES includes/HashTable.h++ )
 
-set(HashTable_SOURCES
-    src/HashTable.c++
-    )
-
-set(HashTable_HEADERS
-    )
-
-add_library(${PROJECT_NAME}
-    SHARED
-    ${HashTable_INCLUDES}
-    ${HashTable_SOURCES}
-    ${HashTable_HEADERS}
-    )
+add_library(${PROJECT_NAME} INTERFACE )
 
 target_include_directories(${PROJECT_NAME}
-    PUBLIC
+    INTERFACE
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes>
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
-
-set_target_properties(
-    ${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 11
-    CXX_STANDARD_REQUIRED ON
-    C_EXTENSIONS OFF
-    POSITION_INDEPENDENT_CODE ON
-    )
-
 
 option(RUN_TESTS "runs unit tests" ON)
 if(RUN_TESTS)
