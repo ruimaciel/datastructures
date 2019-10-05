@@ -8,10 +8,10 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 enable_testing()
 
-add_executable(Case main.c++)
-add_test(Case COMMAND Case)
+add_executable(CaseBinaryHeap test_BinaryHeap.c++)
+add_test(CaseBinaryHeap COMMAND CaseBinaryHeap)
 
-target_link_libraries(Case
+target_link_libraries(CaseBinaryHeap
     BinaryHeap
     )
 
