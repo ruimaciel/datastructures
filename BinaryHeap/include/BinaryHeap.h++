@@ -11,68 +11,88 @@ class BinaryHeap
 {
 public:
 
-    void bubble()
+    BinaryHeap()
     {
+        _elements.reserve(1);
     }
 
     void insert(T element)
     {
         _elements.push_back(element);
+        size_t current_index = _elements.size()-1;
 
-        // perform bubble-up operation
-        const size_t current_index = _elements.size()-1;
-        bubbleUp(_elements, current_index);
+        while(current_index > 0)
+        {
+            const size_t parent_index = parentIndex(current_index);
+            if(_elements[parent_index] > _elements[current_index])
+            {
+                break;
+            }
+
+            swap(parent_index, current_index);
+
+            if(parent_index == 0)
+            {
+                break;
+            }
+            current_index = parent_index;
+        }
     }
 
     T peek() const
     {
         if(_elements.empty())
         {
-            throw std::out_of_range("Called peek() on an empty heap");
+            throw std::out_of_range("empty heap");
         }
-        return _elements.at(0);
+        return _elements.front();
     }
 
     T pop()
     {
         if(_elements.empty())
         {
-            throw std::out_of_range("Called pop() on an empty heap");
+            throw std::exception();
         }
 
-        T popped = _elements.front();
-
-        T last = _elements.pop_back();
-
-        if(_elements.empty())
+        if(_elements.size() == 1)
         {
-            return popped;
+            T top_element = _elements.first();
+            _elements.clear();
+            return top_element;
         }
 
-        _elements[0] = last;
+        // general case: pop the first element, replace it with the last element, and heapify
+        T top_element = _elements.first();
+        _elements[0] = _elements.pop_back();
+        size_t parent_index = 0;
 
-        size_t current_index = 0;
-        size_t left_child_index = getLeftChildIndex(current_index);
-        while(left_child_index < _elements.size())
+        while(!isLeafNode(parent_index))
         {
-            size_t max_child_index = left_child_index;
-            size_t right_child_index = getRightChildIndex(current_index);
-            if(right_child_index < _elements.size() &&  _elements[right_child_index] > _elements[left_child_index])
+            size_t next_index = parent_index;
+
+            const size_t left_child_index = leftChildIndex(parent_index);
+            if(left_child_index < _elements.size() && _elements[left_child_index] > _elements[next_index] )
             {
-                max_child_index = right_child_index;
+                next_index = left_child_index;
             }
 
-            if(_elements[current_index] > _elements[max_child_index])
+            const size_t right_child_index = rightChildIndex(parent_index);
+            if(right_child_index < _elements.size() && _elements[right_child_index] > _elements[next_index] )
+            {
+                next_index = right_child_index;
+            }
+
+            if(next_index == parent_index)
             {
                 break;
             }
 
-            std::swap(_elements[current_index], _elements[max_child_index]);
-            current_index = max_child_index;
-            left_child_index = getLeftChildIndex(current_index);
+            swap(parent_index,	next_index );
+            parent_index = next_index;
         }
 
-        return popped;
+        return top_element;
     }
 
     bool empty() const
@@ -80,38 +100,71 @@ public:
         return _elements.empty();
     }
 
-    static void bubbleUp(std::vector<T> & elements, size_t current_index)
-    {
-        while(current_index > 0)
-        {
-            const size_t parent_index = getParentIndex(current_index);
-            if(elements[current_index] <= elements[parent_index])
-            {
-                break;
-            }
-
-            std::swap(elements[parent_index], elements[current_index]);
-            current_index = parent_index;
-        }
-    }
-
-
 private:
-    static size_t getParentIndex(size_t i)
+    void swap(size_t i, size_t j)
     {
-        return (i-1)/2;
+        std::swap(_elements[i], _elements[j]);
     }
 
-    static size_t getLeftChildIndex(size_t i)
+    bool isLeafNode(size_t index)
     {
-        return 2*i+1;
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
+        return 2*index+1 >= _elements.size();
     }
 
-    static size_t getRightChildIndex(size_t i)
+    size_t parentIndex(size_t index) const
     {
-        return 2*i+2;
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
+        return (index-1)/2;
     }
 
+    size_t leftChildIndex(size_t index) const
+    {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
+        return 2*index+1;
+    }
+
+    size_t rightChildIndex(size_t index) const
+    {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
+        return 2*index+2;
+    }
+
+    T leftChild(size_t index) const
+    {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
+        return _elements[2*index+1];
+    }
+
+    T rightChild(size_t index) const
+    {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
+        return _elements[2*index+2];
+    }
 
 private:
     std::vector<T> _elements;
