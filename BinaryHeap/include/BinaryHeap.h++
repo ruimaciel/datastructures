@@ -54,6 +54,7 @@ public:
         {
             throw std::exception();
         }
+
         if(_elements.size() == 1)
         {
             T top_element = _elements.first();
@@ -90,6 +91,8 @@ public:
             swap(parent_index,	next_index );
             parent_index = next_index;
         }
+
+        return top_element;
     }
 
     bool empty() const
