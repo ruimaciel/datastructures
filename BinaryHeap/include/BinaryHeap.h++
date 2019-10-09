@@ -92,17 +92,17 @@ public:
         }
     }
 
-    void swap(size_t i, size_t j)
-    {
-        std::swap(_elements[i], _elements[j]);
-    }
-
     bool empty() const
     {
         return _elements.empty();
     }
 
 private:
+    void swap(size_t i, size_t j)
+    {
+        std::swap(_elements[i], _elements[j]);
+    }
+
     bool isLeafNode(size_t index)
     {
         if(index > _elements.size())
