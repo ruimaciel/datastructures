@@ -105,35 +105,63 @@ public:
 private:
     bool isLeafNode(size_t index)
     {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
         return 2*index+1 >= _elements.size();
     }
 
     size_t parentIndex(size_t index) const
     {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
         return (index-1)/2;
     }
 
     size_t leftChildIndex(size_t index) const
     {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
         return 2*index+1;
     }
 
     size_t rightChildIndex(size_t index) const
     {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
         return 2*index+2;
     }
 
     T leftChild(size_t index) const
     {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
         return _elements[2*index+1];
     }
 
     T rightChild(size_t index) const
     {
+        if(index > _elements.size())
+        {
+            throw std::out_of_range("index out of range");
+        }
+
         return _elements[2*index+2];
     }
-
-private:
 
 private:
     std::vector<T> _elements;
